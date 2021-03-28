@@ -1,0 +1,61 @@
+/*
+In this example I am experimenting a robot to reverse its direction whenever a obstacle is sensed. To test it, I am using two buttons instead of two IR sensors as Tinkercad simulation 
+does not provide IR sensors. The 2nd thing is it has only 2 direction, foreward and reverese. Later on, I will add left right movement too. 
+Use it at your own risk.
+*/
+int b1=2, b2=3, mot1=7, mot2=8; // b1 b2 are button pulled down, mot1 mot2 are 2 pins of a 3V motor
+ int s,t; // for recording status
+ bool state; //for recording state of the bot
+void setup()
+{
+  pinMode(mot1, OUTPUT);
+  pinMode(mot2, OUTPUT);
+  pinMode(b1, INPUT);
+  pinMode(b2, INPUT);
+  Serial.begin(9600);   // remove the serial things if not required.
+  Serial.print("start");
+  state = true; // initial bot movement is forward
+}
+
+
+void loop()
+{
+ s=digitalRead(b1);
+ t=digitalRead(b2);
+  if(s==HIGH && t==LOW){
+    forward();
+    state=true;
+  }
+  if(s==LOW && t==HIGH){
+    reverse();
+    state=false;
+  }
+  if(s==LOW && t==LOW)
+  {
+      if(state==true){
+        forward();
+      }
+      if(state==false){
+        reverse();
+      }
+  }
+  if(s==HIGH && t==HIGH){
+    stop();
+  }
+}
+
+void forward(){
+  digitalWrite(mot1,HIGH);
+  digitalWrite(mot2,LOW);
+  Serial.println("forward");
+}
+void reverse(){
+  digitalWrite(mot1,LOW);
+  digitalWrite(mot2,HIGH);
+  Serial.println("reverse");
+}
+void stop(){
+  digitalWrite(mot1,LOW);
+  digitalWrite(mot2,LOW);
+  
+}
